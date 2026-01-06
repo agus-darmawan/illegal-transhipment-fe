@@ -1,13 +1,14 @@
 "use client";
 
-import { FC } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { Menu, X, TriangleAlert, SirenIcon } from "lucide-react";
 
-import { useSidebarStore } from "@/hooks/use-sidebar-store";
+import { useSidebarStore } from "@/store/use-sidebar-store";
 import { Button } from "../ui/button";
 
-const Sidebar: FC = () => {
+import React from 'react'
+
+export default function Sidebar() {
   const { isOpen, toggleSidebar } = useSidebarStore();
   const pathname = usePathname();
   const router = useRouter();
@@ -49,4 +50,4 @@ const Sidebar: FC = () => {
   );
 };
 
-export default Sidebar;
+
