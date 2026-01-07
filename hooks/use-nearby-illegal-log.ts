@@ -1,19 +1,6 @@
 import { useMemo } from "react";
 import { dataIllegalLogs, IllegalLog } from "@/app/illegal-log/_components/data-illegal-log";
-
-function distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
-  const R = 6371;
-  const dLat = ((lat2 - lat1) * Math.PI) / 180;
-  const dLon = ((lon2 - lon1) * Math.PI) / 180;
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLon / 2) ** 2;
-
-  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-}
+import { calculateDistance } from "@/components/common/maps/utils";
 
 export default function useNearbyIllegalLogs(
   lat?: number,
@@ -23,9 +10,15 @@ export default function useNearbyIllegalLogs(
   return useMemo<IllegalLog[]>(() => {
     if (!lat || !lng || !radiusKm) return [];
 
-    return dataIllegalLogs.filter((log) => {
-      const d = distanceKm(lat, lng, log.lintang, log.bujur);
-      return d <= radiusKm;
-    });
+    return dataIllegalLogs
+      .filter((log) => {
+        const distance = calculateDistance(lat, lng, log.lintang, log.bujur);
+        return distance <= radiusKm;
+      })
+      .sort((a, b) => {
+        const distA = calculateDistance(lat, lng, a.lintang, a.bujur);
+        const distB = calculateDistance(lat, lng, b.lintang, b.bujur);
+        return distA - distB;
+      });
   }, [lat, lng, radiusKm]);
 }

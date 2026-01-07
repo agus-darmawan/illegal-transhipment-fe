@@ -1,7 +1,9 @@
 "use client";
 import { useEffect } from "react";
-import { useMapEvents } from "react-leaflet";
-import L, { Layer } from "leaflet";
+import { useMap } from "react-leaflet";
+import L from "leaflet";
+// @ts-ignore
+import "leaflet.heat";
 
 type HeatmapPoint = {
   lat: number;
@@ -13,33 +15,40 @@ export default function HeatmapLayer({
 }: {
   data: HeatmapPoint[];
 }) {
-  const map = useMapEvents({});
+  const map = useMap();
 
   useEffect(() => {
     if (!map || !data.length) return;
 
+    // Convert data to format: [lat, lng, intensity]
     const points: [number, number, number][] = data.map((p) => [
       p.lat,
       p.lon,
-      0.6,
+      0.8, // intensity
     ]);
 
-    const heat = (L as typeof L & {
-      heatLayer: (
-        points: [number, number, number][],
-        opts: Record<string, unknown>
-      ) => Layer;
-    }).heatLayer(points, {
-      radius: 25,
-      blur: 20,
-      maxZoom: 12,
-      minOpacity: 0.4,
-    });
+    // Check if heatLayer is available
+    if (typeof (L as any).heatLayer === 'function') {
+      const heatLayer = (L as any).heatLayer(points, {
+        radius: 25,
+        blur: 20,
+        maxZoom: 12,
+        minOpacity: 0.4,
+        gradient: {
+          0.0: '#3b82f6',
+          0.5: '#fbbf24', 
+          1.0: '#ef4444'
+        }
+      });
 
-    heat.addTo(map);
-    return () => {
-      map.removeLayer(heat);
-    };
+      heatLayer.addTo(map);
+
+      return () => {
+        map.removeLayer(heatLayer);
+      };
+    } else {
+      console.warn('Leaflet.heat plugin not loaded');
+    }
   }, [map, data]);
 
   return null;
