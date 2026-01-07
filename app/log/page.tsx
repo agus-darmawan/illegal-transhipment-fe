@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import BaseMap from "@/components/common/maps";
 import IllegalLogSidebar from "./_components/illegal-log-sidebar";
@@ -17,24 +17,22 @@ type ClickPayload = {
 export default function IllegalLogPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [clicked, setClicked] = useState<ClickPayload | null>(null);
-
-  // Load params from URL on mount
-  useEffect(() => {
+  const [clicked, setClicked] = useState<ClickPayload | null>(() => {
     const lat = searchParams.get("lat");
     const lng = searchParams.get("lng");
     const radius = searchParams.get("radius");
     const zoom = searchParams.get("zoom");
 
     if (lat && lng && radius && zoom) {
-      setClicked({
+      return {
         lat: parseFloat(lat),
         lng: parseFloat(lng),
         radius: parseFloat(radius),
         zoom: parseInt(zoom),
-      });
+      };
     }
-  }, [searchParams]);
+    return null;
+  });
 
   const logs = useNearbyIllegalLogs(
     clicked?.lat,
@@ -45,7 +43,6 @@ export default function IllegalLogPage() {
   const handleMapClick = (payload: ClickPayload) => {
     setClicked(payload);
     
-    // Update URL params
     const params = new URLSearchParams();
     params.set("lat", payload.lat.toFixed(6));
     params.set("lng", payload.lng.toFixed(6));
@@ -62,7 +59,6 @@ export default function IllegalLogPage() {
 
   return (
     <div className="flex h-screen w-screen overflow-hidden">
-      {/* Map Container */}
       <div className={`transition-all duration-300 ${clicked ? 'w-[calc(100%-360px)]' : 'w-full'}`}>
         <BaseMap
           center={[1.44, 125.17]}
@@ -74,9 +70,8 @@ export default function IllegalLogPage() {
         />
       </div>
 
-      {/* Sidebar - Fixed position */}
       {clicked && (
-        <div className="w-[360px] h-screen fixed right-0 top-0 z-[1000]">
+        <div className="w-90 h-screen fixed right-20 top-0 z-999">
           <IllegalLogSidebar
             logs={logs}
             onClear={handleClear}

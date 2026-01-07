@@ -14,8 +14,8 @@ export default function Sidebar() {
   const router = useRouter();
 
   const icons = [
-    { icon: SirenIcon, redirect: "/illegal-transhipment" },
-    { icon: TriangleAlert, redirect: "/illegal-log" },
+    { icon: SirenIcon, redirect: "/" },
+    { icon: TriangleAlert, redirect: "/log" },
   ];
 
   return (

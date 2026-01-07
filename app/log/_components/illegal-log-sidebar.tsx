@@ -11,8 +11,7 @@ export default function IllegalLogSidebar({
 }) {
   return (
     <div className="w-full h-full bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 shadow-2xl flex flex-col">
-      {/* Header */}
-      <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700 bg-gradient-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950">
+      <div className="flex items-center justify-between p-3 border-b border-gray-200 dark:border-gray-700 bg-linier-to-r from-red-50 to-orange-50 dark:from-red-950 dark:to-orange-950">
         <div>
           <h3 className="font-bold text-base text-gray-900 dark:text-white">
             Illegal Fishing Log
@@ -31,7 +30,7 @@ export default function IllegalLogSidebar({
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto p-3 space-y-2">
+      <div className="flex-1 overflow-y-auto p-2 space-y-1">
         {logs.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full text-center px-4">
             <div className="w-16 h-16 mb-3 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center">

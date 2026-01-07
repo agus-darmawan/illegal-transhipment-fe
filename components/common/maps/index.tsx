@@ -1,12 +1,11 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   MapContainer,
   TileLayer,
   LayersControl,
   ZoomControl,
   useMapEvents,
-  Popup,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -50,8 +49,6 @@ export default function BaseMap({
       zoom: (e) => {
         const newZoom = e.target.getZoom();
         setZoomLevel(newZoom);
-        
-        // Update clicked payload with new zoom if exists
         if (clicked && onMapClick) {
           const updatedPayload: ClickPayload = {
             ...clicked,
@@ -67,7 +64,6 @@ export default function BaseMap({
   }
 
   const calculateRadiusFromZoom = (zoom: number): number => {
-    // Import the same logic as utils
     if (zoom >= 18) return 0.5;
     if (zoom >= 17) return 0.75;
     if (zoom >= 16) return 1;
@@ -139,9 +135,8 @@ export default function BaseMap({
         <ZoomControl position="bottomleft" />
       </MapContainer>
 
-      {/* Radius Info Overlay */}
       {clicked && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-white dark:bg-gray-800 shadow-lg rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-700">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-999 bg-white dark:bg-gray-800 shadow-lg rounded-lg px-4 py-2 border border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-3 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-blue-500 border-2 border-white"></div>
@@ -163,7 +158,7 @@ export default function BaseMap({
 
       {/* Instructions */}
       {!clicked && (
-        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[1000] bg-blue-50 dark:bg-blue-950 shadow-lg rounded-lg px-4 py-3 border border-blue-200 dark:border-blue-800 max-w-md">
+        <div className="absolute top-4 left-1/2 -translate-x-1/2 z-999 bg-blue-50 dark:bg-blue-950 shadow-lg rounded-lg px-4 py-3 border border-blue-200 dark:border-blue-800 max-w-md">
           <p className="text-sm text-blue-900 dark:text-blue-100 text-center">
             <strong>Klik pada peta</strong> untuk mencari kapal illegal fishing dalam radius tertentu
           </p>
