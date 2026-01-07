@@ -15,7 +15,7 @@ export default function Sidebar() {
 
   const icons = [
     { icon: SirenIcon, redirect: "/illegal-transhipment" },
-    { icon: TriangleAlert, redirect: "/illegal" },
+    { icon: TriangleAlert, redirect: "/illegal-log" },
   ];
 
   return (
