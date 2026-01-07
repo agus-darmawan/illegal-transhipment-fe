@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { dataIllegalLogs, IllegalLog } from "@/app/illegal-log/_components/data-illegal-log";
+import { dataIllegalLogs, IllegalLog } from "@/app/log/_components/data-illegal-log";
 import { calculateDistance } from "@/components/common/maps/utils";
 
 export default function useNearbyIllegalLogs(
